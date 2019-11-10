@@ -1,4 +1,4 @@
 <?php
 session_destroy();
-header('Location: index.html')
+header('Location: admin.html')
 ?>

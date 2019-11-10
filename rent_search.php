@@ -15,34 +15,17 @@
 	<!-- Stylesheets -->
 	<link rel="stylesheet" href="css/bootstrap.min.css"/>
 	<link rel="stylesheet" href="css/font-awesome.min.css"/>
-	<link rel="stylesheet" href="css/animate.css"/>
-	<link rel="stylesheet" href="css/owl.carousel.css"/>
 	<link rel="stylesheet" href="css/style.css"/>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+		
 	
 	<link rel="stylesheet" type="text/css" href="Styles.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-	<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="description" content="Bluesky template project">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
-<link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.carousel.css">
-<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
-<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/animate.css">
-<link rel="stylesheet" type="text/css" href="styles/properties.css">
-<link rel="stylesheet" type="text/css" href="styles/properties_responsive.css">
+	<link rel="stylesheet" type="text/css" href="styles/properties.css">
 
 
-	<!--[if lt IE 9]>
-	  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-	  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-	<![endif]-->
+
+	
 
 </head>
 <body>
@@ -65,9 +48,9 @@
 							<ul>
 								   <li><a href="#">blog</a></li>
                                   <li><a href="normalHomeSale.php">new project</a></li>
-                                  <li><a href="#">payment </a></li>
+                                  
                                   <li><a href="realestate.php">realestate solution</a></li>
-                                  <li><a href="#">property list</a></li>
+                                  
 							</ul>
 						</nav>
 						
@@ -105,77 +88,73 @@
 
 
 	<!-- Hero section end -->
-	   <?php 
+ <?php 
     include('indexDB.php');
-    $loc=$c=$pf=$pf1=$a=$tc='';
-    $x1="select  location from flat";
-    $x2="select  rent_amount from rent";
-    $x3="select  city from flat";
-    $x4="select  p_feature from flat";
-    $x5="select  p_feature1 from flat";
-    $x6="select  area from flat";
-    $q="select * from view_rent order by flat_id desc";
-    if(isset($_POST['loc']) && isset($_POST['city'])|| isset($_POST['p_feature']) ||isset($_POST['p_feature1']) || isset($_POST['area']) || isset($_POST['rent_amount']) )
+    $loc=$c=$pf=$pf1=$a=$a1=$tc=$tc1='';
+
+    $conditions = "";
+    if (isset($_POST['loc']) && $_POST['loc']) {
+    	$conditions.= "countryid=".$_POST['loc']." AND ";
+    }
+
+    if (isset($_POST['city']) && $_POST['city']) {
+    	$conditions.= "stateid=".$_POST['city']." AND ";
+    }
+
+    if (isset($_POST['p_feature']) && $_POST['p_feature']) {
+    	$conditions.= "p_feature=".$_POST['p_feature']." AND ";
+    }
+
+    if (isset($_POST['p_feature1']) && $_POST['p_feature1']) {
+    	$conditions.= "p_feature1=".$_POST['p_feature1']." AND ";
+    }
+    if (isset($_POST['price_min_value']) && $_POST['price_min_value'] && $_POST['price_max_value']) {
+    	$conditions.= "rent_amount BETWEEN ".$_POST['price_min_value']." AND ".$_POST['price_max_value']." AND ";
+    }
+    if (isset($_POST['area_min_value']) && $_POST['area_min_value'] && $_POST['area_max_value']) {
+    	$conditions.= "area BETWEEN ".$_POST['area_min_value']." AND ".$_POST['area_max_value']." AND ";
+    }
+
+
+    $conditions.= " 1";
+
+
+    
+     
+
+    /*if(($_POST['loc']) && $_POST['loc']) || isset($_POST['city']) || isset($_POST['p_feature']) || isset($_POST['p_feature1']) || isset($_POST['price_min_value']) || isset($_POST['price_max_value']) || isset($_POST['area_min_value']) || isset($_POST['area_max_value']) )
     {
-        $loc=$_POST['loc'];
+
+       $loc=$_POST['loc'];
         $c=$_POST['city'];
         $pf=$_POST['p_feature'];
         $pf1=$_POST['p_feature1'];
-        $a=$_POST['area'];
-        $tc=$_POST['rent_amount'];
-        if($loc=='All' && $c=='All'|| $pf=='All' || $pf1=='All' || $a=='All' || $tc=='All' )
-        {
-            $q="select * from view_rent order by flat_id desc";
-        }
-        if($loc=='All' && $c!='All' || $pf!=='All' || $pf1!=='All'|| $a!=='All' || $tc!=='All' )
-        {
-            $q="select * from view_rent where city='$c' order by flat_id desc";
-        }
-        if($loc!='All')
-        {
-            $x2="select city from view_rent where location='$loc'";
-            $q="select * from view_rent where location='$loc' order by flat_id desc";
-        }
+        $a=$_POST['area_min_value'];
+        $a1=$_POST['area_max_value'];
+        $tc=$_POST['price_min_value'];
+        $tc1=$_POST['price_max_value'];
+
+          $q="SELECT * FROM  rent_search WHERE  countryid ='".$loc."' OR  stateid ='".$c."' OR p_feature ='".$pf."'
+            OR p_feature1 ='".$pf1."' OR rent_amount BETWEEN  '".$tc."' AND  '".$tc1."' OR area BETWEEN 
+            '".$a."' AND  '".$a1."' OR status='1'  ORDER BY flat_id DESC";
+       
+         
     }
-    $r1=$conn->query($x1);
-    $r2=$conn->query($x2);
-    $r3=$conn->query($x3);
-    $r4=$conn->query($x4);
-    $r5=$conn->query($x5);
-    $r6=$conn->query($x6);
+    else
+    {
+    	$q="SELECT * FROM rent_search where status ='1' ORDER BY flat_id DESC";
+    }*/
+
+    	$q="SELECT * FROM rent_search where status ='1' AND ".$conditions." ORDER BY flat_id DESC";
+
+   
+  
+   
+   
     
     ?>
-	<!-- Filter form section -->
-	<!-- <div class="filter-search">
-		<div class="container">
-			<form class="filter-form" method="post" action="normalHomeSale.php">
-			<h2>Search by Location</h2>
-			<h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Location   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;City</h4>
-			
-			
-				<select name="loc">
-										<option value="All" selected>All</option>
-					<?php 
-					while($p1=mysqli_fetch_array($r1, MYSQLI_ASSOC))
-					{
-						echo "<option value='".$p1['location']."'>".$p1['location']."</option>";
-					}
-					?>
-				</select>
-				<select name="city">
-					<option value="All" selected>All</option>
-					<?php 
-					while($p2=mysqli_fetch_array($r2, MYSQLI_ASSOC))
-					{
-						echo "<option value='".$p2['city']."'>".$p2['city']."</option>";
-					}
-					?>
-				</select>
-				<button class="site-btn fs-submit" type="submit">SEARCH</button>
-			</form>
-		</div>
-	</div> -->
-	<!-- page -->
+
+	
 	<section class="page-section categories-page">
 		<br><br>
 		<h2 align="center">All Properties</h2>
@@ -184,19 +163,23 @@
 			<div class="row">
 
 				<?php
+				// $q="SELECT * FROM rent_search where status ='1' ORDER BY flat_id DESC";
 						$r = $conn->query($q);
-						while($x=mysqli_fetch_array($r, MYSQLI_ASSOC))
+						
+						while($x= mysqli_fetch_array($r, MYSQLI_ASSOC))
 						{
+
+
 							?>
 							<div class='col-md-4' style="height:300px;">
-								<form action='single-list_rent.php?action=add&id=<?php echo $x['flat_id']; ?>' method="post">
+								<form action='ssingle-list_rent.php?action=add&id=<?php echo $x['flat_id']; ?>' method="post">
 								<div class='sale-notic'>FOR rent</div>
 									<div class='propertie-info text-white' style="background-image:url('<?php echo $x['image'] ?>');height:270px">
 									<div class='info-warp'>
 										<p><i class='fa fa-map-marker'></i><?php echo $x['location'] ?></p>
 
 									</div>
-									<button class='price' type='submit'><?php echo "Rs. ".$x['rent_amount'] ?></button>
+									<button class='price' type='submit'><?php echo "TK. ".$x['rent_amount'] ?></button>
 									</div>
 									
 									</form>
@@ -206,36 +189,7 @@
 				?>
 			</div>
 		</div>
-		<!-- <br><br>
-		<h2 align="center">Your Properties</h2>
-		<br><br>
-		<div class="container">
-		<div class="row">
-				<?php
-						$ab="select * from flat natural join sale where uid=".$_SESSION['id']."";
-						$r1 = $conn->query($ab);
-						while($y=mysqli_fetch_array($r1, MYSQLI_ASSOC))
-						{
-							?>
-							<div class='col-md-4' style="height:300px;">
-								<form action='single-list_sale.php?action=add&id=<?php echo $y['flat_id']; ?>' method="post">
-								<div class='sale-notic'>FOR Sale</div>
-								
-									<div class='propertie-info text-white' style="background-image:url('<?php echo $y['image'] ?>');height:270px">
-									<div class='info-warp'>
-										<p><i class='fa fa-map-marker'></i><?php echo $y['location'] ?></p>
-									</div>
-									<button class='price' type='submit'><?php echo "Rs. ".$y['totalcost'] ?></button>
-									</div>
-
-									</form>
-							</div>
-
-				<?php
-						}
-				?>
-			</div>
-		</div> -->
+		
 	</section>
 
 	<footer class="footer">
@@ -268,19 +222,8 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 	<!-- Footer section end -->                               
 	<!--====== Javascripts & Jquery ======-->
-	<script src="js/jquery-3.2.1.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/owl.carousel.min.js"></script>
-	<script src="js/masonry.pkgd.min.js"></script>
-	<script src="js/magnific-popup.min.js"></script>
-	<script src="js/main.js"></script>
-
-	<script src="js/jquery-3.2.1.min.js"></script>
-<script src="styles/bootstrap4/popper.js"></script>
-<script src="styles/bootstrap4/bootstrap.min.js"></script>
-<script src="plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
-<script src="plugins/easing/easing.js"></script>
+	
 <script src="plugins/parallax-js-master/parallax.min.js"></script>
-<script src="js/custom.js"></script>
+
 </body>
 </html>

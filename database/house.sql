@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 08, 2019 at 07:33 PM
+-- Generation Time: Oct 19, 2019 at 05:29 PM
 -- Server version: 10.4.6-MariaDB
 -- PHP Version: 7.1.32
 
@@ -51,6 +51,29 @@ CREATE TABLE `cardsale` (
 ,`image` varchar(500)
 ,`time` timestamp
 );
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `country`
+--
+
+CREATE TABLE `country` (
+  `countryid` int(11) NOT NULL,
+  `location` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `country`
+--
+
+INSERT INTO `country` (`countryid`, `location`) VALUES
+(1, 'dhaka'),
+(2, 'rajshahi'),
+(3, 'chittagong'),
+(4, 'khulna'),
+(5, 'rangpur'),
+(6, 'sylhet ');
 
 -- --------------------------------------------------------
 
@@ -146,11 +169,13 @@ CREATE TABLE `flat` (
 --
 
 INSERT INTO `flat` (`flat_id`, `uid`, `bid`, `city`, `description`, `amenities`, `area`, `image`, `image1`, `image2`, `image3`, `time`, `p_feature`, `p_feature1`, `p_feature2`, `amenities1`, `amenities2`, `location`) VALUES
-(42, 3, NULL, 'dhanmondhi', 'best apartment', 'swimming pool', 870, 'img/img8.jpg', 'img/img7.jpg', 'img/img6.jpg', 'img/img5.jpg', '2019-10-07 05:20:37', '4', '3', '2', 'internet', 'air condition', 'dhaka'),
-(43, 3, NULL, 'mirpur', 'best apartment', 'swimming pool', 870, 'img/img8.jpg', 'img/img7.jpg', 'img/img6.jpg', 'img/img5.jpg', '2019-10-07 05:26:25', '4', '3', '2', 'internet', 'air condition', 'dhaka'),
-(44, 3, NULL, 'mirpur', 'best apartment', 'swimming pool', 870, 'img/img8.jpg', 'img/img7.jpg', 'img/img6.jpg', 'img/img5.jpg', '2019-10-07 05:27:02', '8', '3', '2', 'internet', 'air condition', 'dhaka'),
 (45, 3, NULL, 'dinajpur', 'Why Tokyo City is right for you Your family deserves the most luxurious and accessible life available in the city. Tokyo City offers this along with the outlook of a developing neighborhood and promising future.', 'swimming pool', 1024, 'img/img8.jpg', 'img/img6.jpg', 'img/img6.jpg', 'img/img5.jpg', '2019-10-08 17:00:05', '4', '2', '1', 'internet', 'air condition', 'dhaka'),
-(46, 3, NULL, 'dhanmondhi', 'Why Tokyo City is right for you Your family deserves the most luxurious and accessible life available in the city. Tokyo City offers this along with the outlook of a developing neighborhood and promising future. You can look forward to: - Rapidly developing area - Minutes away from Hazrat Shahjalal Airport and Railway station', 'swimming pool', 870, 'img/img5.jpg', 'img/img7.jpg', 'img/img6.jpg', 'img/img6.jpg', '2019-10-08 17:00:44', '4', '2', '1', 'internet', 'air condition', 'dhaka');
+(47, 3, NULL, 'mirpur', 'Why Tokyo City is right for you Your family deserves the most luxurious and accessible life available in the city. Tokyo City offers this along with the outlook of a developing neighborhood and promising future. You can look forward to: - Rapidly developing area - Minutes away from Hazrat Shahjalal Airport and Railway station', 'swimming pool', 870, 'img/img8.jpg', 'img/img7.jpg', 'img/img6.jpg', 'img/img5.jpg', '2019-10-11 17:25:08', '4', '2', '1', 'internet', 'air condition', 'dhaka'),
+(48, 3, NULL, 'mirpur', 'Why Tokyo City is right for you Your family deserves the most luxurious and accessible life available in the city. Tokyo City offers this along with the outlook of a developing neighborhood and promising future. You can look forward to: - Rapidly developing area - Minutes away from Hazrat Shahjalal Airport and Railway station', 'swimming pool', 1024, 'img/img6.jpg', 'img/img7.jpg', 'img/img6.jpg', 'img/img5.jpg', '2019-10-11 17:27:11', '4', '4', '2', 'internet', 'air condition', 'dhaka'),
+(49, 3, NULL, 'rangpur', 'Why Tokyo City is right for you Your family deserves the most luxurious and accessible life available in the city. Tokyo City offers this along with the outlook of a developing neighborhood and promising future. You can look forward to: - Rapidly developing area - Minutes away from Hazrat Shahjalal Airport and Railway station', 'swimming pool', 1024, 'img/img8.jpg', 'img/img7.jpg', 'img/img6.jpg', 'img/img5.jpg', '2019-10-18 19:00:57', '4', '2', '1', 'internet', 'air condition', 'rangpur'),
+(50, 3, NULL, 'gaibandha', 'best villa', 'internet', 1024, 'img/img8.jpg', 'img/img7.jpg', 'img/img6.jpg', 'img/img5.jpg', '2019-10-19 03:08:24', '4', '3', '2', 'internet', 'air condition', 'rangpur'),
+(51, 3, NULL, 'khulna', 'best apartment', 'swimming pool', 1024, 'img/img8.jpg', 'img/img7.jpg', 'img/img6.jpg', 'img/img5.jpg', '2019-10-19 03:12:45', '4', '3', '2', 'internet', 'wash', 'khulna'),
+(52, 3, NULL, 'jessore', 'best apartment', 'swimming pool', 870, 'img/img8.jpg', 'img/img7.jpg', 'img/img6.jpg', 'img/img6.jpg', '2019-10-19 03:14:23', '8', '4', '2', 'internet', 'air condition', 'khulna');
 
 -- --------------------------------------------------------
 
@@ -259,7 +284,7 @@ CREATE TABLE `rent` (
 
 INSERT INTO `rent` (`flat_id`, `rent_amount`, `deposit_amount`, `time_period`) VALUES
 (45, '12000', '12000000', '5'),
-(42, '12000', '12000000', '5');
+(48, '12000', '12000000', '5');
 
 -- --------------------------------------------------------
 
@@ -278,20 +303,73 @@ CREATE TABLE `sale` (
 --
 
 INSERT INTO `sale` (`flat_id`, `totalcost`, `rate`) VALUES
-(42, '104400000', '120000'),
-(43, '104400000', '120000'),
-(43, '104400000', '120000');
+(47, '10440000', '12000'),
+(49, '12288000', '12000'),
+(50, '12288000', '12000'),
+(51, '122880000', '120000'),
+(52, '104400000', '120000');
 
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `tbl`
+-- Table structure for table `state`
+--
+
+CREATE TABLE `state` (
+  `stateid` int(11) NOT NULL,
+  `countryid` int(11) NOT NULL,
+  `city` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `state`
+--
+
+INSERT INTO `state` (`stateid`, `countryid`, `city`) VALUES
+(1, 1, 'mirpur'),
+(2, 1, 'dhanmondhi'),
+(3, 2, 'pabna'),
+(4, 2, 'natore'),
+(5, 3, 'bandarban'),
+(6, 3, 'rangamati'),
+(7, 4, 'jessore'),
+(8, 4, 'bagerhat'),
+(9, 5, 'rangpur'),
+(10, 5, 'gaibandha'),
+(11, 6, 'habigonj'),
+(12, 6, 'sylhet');
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `tbl2`
 -- (See below for the actual view)
 --
-CREATE TABLE `tbl` (
-`flat_id` int(11)
+CREATE TABLE `tbl2` (
+`countryid` int(11)
 ,`location` varchar(255)
-,`city` varchar(100)
+,`stateid` int(11)
+,`city` varchar(255)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `tbl3`
+-- (See below for the actual view)
+--
+CREATE TABLE `tbl3` (
+`location` varchar(255)
+,`city` varchar(255)
+,`countryid` int(11)
+,`stateid` int(11)
+,`flat_id` int(11)
+,`amenities` varchar(500)
+,`area` double
+,`image` varchar(500)
+,`p_feature` varchar(255)
+,`p_feature1` varchar(255)
+,`totalcost` varchar(255)
 );
 
 -- --------------------------------------------------------
@@ -364,11 +442,20 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Structure for view `tbl`
+-- Structure for view `tbl2`
 --
-DROP TABLE IF EXISTS `tbl`;
+DROP TABLE IF EXISTS `tbl2`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `tbl`  AS  select `flat`.`flat_id` AS `flat_id`,`flat`.`location` AS `location`,`flat`.`city` AS `city` from `flat` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `tbl2`  AS  select `country`.`countryid` AS `countryid`,`country`.`location` AS `location`,`state`.`stateid` AS `stateid`,`state`.`city` AS `city` from (`country` join `state` on(`country`.`countryid` = `state`.`countryid`)) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `tbl3`
+--
+DROP TABLE IF EXISTS `tbl3`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `tbl3`  AS  select `tbl2`.`location` AS `location`,`tbl2`.`city` AS `city`,`tbl2`.`countryid` AS `countryid`,`tbl2`.`stateid` AS `stateid`,`view_pro`.`flat_id` AS `flat_id`,`view_pro`.`amenities` AS `amenities`,`view_pro`.`area` AS `area`,`view_pro`.`image` AS `image`,`view_pro`.`p_feature` AS `p_feature`,`view_pro`.`p_feature1` AS `p_feature1`,`view_pro`.`totalcost` AS `totalcost` from (`tbl2` join `view_pro` on(`tbl2`.`location` = `view_pro`.`location` and `tbl2`.`city` = `view_pro`.`city`)) ;
 
 -- --------------------------------------------------------
 
@@ -391,6 +478,12 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `country`
+--
+ALTER TABLE `country`
+  ADD PRIMARY KEY (`countryid`);
 
 --
 -- Indexes for table `flat`
@@ -429,6 +522,13 @@ ALTER TABLE `sale`
   ADD KEY `flat_id` (`flat_id`);
 
 --
+-- Indexes for table `state`
+--
+ALTER TABLE `state`
+  ADD PRIMARY KEY (`stateid`),
+  ADD KEY `countryid` (`countryid`);
+
+--
 -- Indexes for table `upcoming_projects`
 --
 ALTER TABLE `upcoming_projects`
@@ -439,10 +539,16 @@ ALTER TABLE `upcoming_projects`
 --
 
 --
+-- AUTO_INCREMENT for table `country`
+--
+ALTER TABLE `country`
+  MODIFY `countryid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- AUTO_INCREMENT for table `flat`
 --
 ALTER TABLE `flat`
-  MODIFY `flat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `flat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `login`
@@ -461,6 +567,12 @@ ALTER TABLE `login_builder`
 --
 ALTER TABLE `packers_movers`
   MODIFY `pid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `state`
+--
+ALTER TABLE `state`
+  MODIFY `stateid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `upcoming_projects`
@@ -483,6 +595,12 @@ ALTER TABLE `rent`
 --
 ALTER TABLE `sale`
   ADD CONSTRAINT `sale_ibfk_1` FOREIGN KEY (`flat_id`) REFERENCES `flat` (`flat_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `state`
+--
+ALTER TABLE `state`
+  ADD CONSTRAINT `state_ibfk_1` FOREIGN KEY (`countryid`) REFERENCES `country` (`countryid`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

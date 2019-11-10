@@ -30,9 +30,9 @@
 							<ul>
 								 <li><a href="#">blog</a></li>
                                   <li><a href="properties.php">new project</a></li>
-                                  <li><a href="news.php">Loan calculator </a></li>
+                                 
                                   <li><a href="contact.php">realestate solution</a></li>
-                                  <li><a href="contact.php">property list</a></li>
+                                 
 							</ul>
 						</nav>
 						

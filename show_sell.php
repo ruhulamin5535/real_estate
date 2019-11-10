@@ -52,6 +52,7 @@ $courses=$stmt->fetchAll(PDO::FETCH_ASSOC);
                     <th> garages </th>
                     <th> Rate </th>
                     <th> Actions      </th>
+                    <th> change status     </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -75,19 +76,33 @@ $courses=$stmt->fetchAll(PDO::FETCH_ASSOC);
                         <td><?= $course['p_feature1'] ?></td>
                         <td><?= $course['p_feature2'] ?></td>
                         <td><?php echo $course['rate']?></td>
-                      
-
-
-
-
-
                         <td>
                             <nav>
                                
-                                <!-- <li><a href="edit.php?flat_id=<?= $course['flat_id'] ?>">Edit</a> </li> -->
+                                 <?php
+                         if ($course['status']==1) {
+                              echo "<p style='color: green'> active</p>";
+                          } 
+                          else{
+                             echo "<p style='color: red'>inactive</p>";
+                          }
+                          ?>
                                 <li><a href="delete_sell.php?flat_id=<?= $course['flat_id'] ?>">Delete</a></li>
+                                
                             </nav>
+                            
                         </td>
+                      
+                        <td> <select onchange="disable(this.value,<?php echo $course['flat_id'];  ?>)">
+                             <option value="">select</option>
+                             <option value="1">active</option>
+                             <option value="0">inactive</option>
+                         </select> </td>
+                         
+
+
+
+                        
                     </tr>
 
                     <?php
@@ -104,7 +119,19 @@ $courses=$stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-
+<script type="text/javascript">
+    function disable(val,user_id) {
+       alert("you should chage status");
+       $.ajax({
+        type: 'post',
+        url: 'change.php',
+        data:{val:val,user_id:user_id},
+        success: function(result){
+            console.log(result);
+        }
+       });
+    }
+</script>
 
 </body>
 </html>

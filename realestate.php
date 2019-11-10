@@ -34,10 +34,10 @@
               <ul>
 
 <li><a href="#">blog</a></li>
-                                  <li><a href="project.php">new project</a></li>
-                                  <li><a href="#">Loan calculator </a></li>
+                                  <li><a href="newproject.php">new project</a></li>
+                                  
                                   <li><a href="realestate.php">realestate solution</a></li>
-                                  <li><a href="#">property list</a></li>
+                                  
               </ul>
             </nav>
            

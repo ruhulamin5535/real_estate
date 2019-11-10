@@ -38,11 +38,30 @@
 <link rel="stylesheet" type="text/css" href="styles/properties.css">
 <link rel="stylesheet" type="text/css" href="styles/properties_responsive.css">
 
-
+<link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
 	<!--[if lt IE 9]>
 	  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 	  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
+	<script>
+    function getState(val) {
+        $.ajax({
+        type: "POST",
+        url: "get_state.php",
+        data:'countryid='+val,
+        success: function(data){
+            $("#state-list").html(data);
+            $(".nice-select").hide();
+            $("#state-list").show();
+            $("#country-list").show();
+            $("#bedrooms").show();
+            $("#bathrooms").show();
+            $("#area").show();
+            $("#totalcost").show();
+        }
+        });
+    }
+    </script>
 
 </head>
 <body>
@@ -64,10 +83,10 @@
 						<nav class="main_nav">
 							<ul>
 								   <li><a href="#">blog</a></li>
-                                  <li><a href="normalHomeSale.php">new project</a></li>
-                                  <li><a href="#">payment </a></li>
+                                  <li><a href="newproject.php">new project</a></li>
+                                  
                                   <li><a href="realestate.php">realestate solution</a></li>
-                                  <li><a href="#">property list</a></li>
+                                 
 							</ul>
 						</nav>
 						
@@ -106,33 +125,28 @@
 
 	<!-- Hero section end -->
 	<?php 
-	include('indexDB.php');
-	$loc=$c='';
-	$x1="select distinct location from flat";
-	$x2="select distinct city from flat";
-	$q="select * from cardsale order by time desc";
-	if(isset($_POST['loc']) && isset($_POST['city']))
-	{
-		$loc=$_POST['loc'];
-		$c=$_POST['city'];
-		if($loc=='All' && $c=='All')
-		{
-			$q="select * from cardsale order by time desc";
-		}
-		if($loc=='All' && $c!='All')
-		{
-			$q="select * from cardsale where city='$c' order by time desc";
-		}
-		if($loc!='All')
-		{
-			$x2="select city from cardsale where location='$loc'";
-			$q="select * from cardsale where location='$loc' order by time desc";
-		}
-	}
-	$r1=$conn->query($x1);
-	$r2=$conn->query($x2);
-	
-	?>
+    include('indexDB.php');
+    $loc=$c=$pf=$pf1=$a=$a1=$tc=$tc1='';
+    
+    $q="SELECT * FROM sell ORDER BY flat_id DESC;";
+
+    if(isset($_POST['loc']) && isset($_POST['city']) )
+    {
+
+       $loc=$_POST['loc'];
+        $c=$_POST['city'];
+       
+            $q="SELECT * FROM sell WHERE countryid ='".$loc."' AND  stateid ='".$c."'  ORDER BY flat_id DESC";
+       
+
+         
+    }
+  
+   
+   
+    
+    ?>
+
 
 	<!-- Filter form section -->
 	<div class="filter-search">
@@ -142,23 +156,21 @@
 			<h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Location   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;City</h4>
 			
 			
-				<select name="loc">
+				<select name="loc" name="loc" id="country-list" onChange="getState(this.value);">
 										<option value="All" selected>All</option>
-					<?php 
-					while($p1=mysqli_fetch_array($r1, MYSQLI_ASSOC))
-					{
-						echo "<option value='".$p1['location']."'>".$p1['location']."</option>";
-					}
-					?>
+					 <?php
+                                                $sql1="SELECT * FROM country";
+                                                 $results=$conn->query($sql1); 
+                                                while($rs=$results->fetch_assoc()) { 
+                                                ?>
+                                                <option value="<?php echo $rs["countryid"]; ?>"><?php echo $rs["location"]; ?></option>
+                                                <?php
+                                                }
+                                                ?> 
 				</select>
-				<select name="city">
+				<select name="city"  id="state-list">
 					<option value="All" selected>All</option>
-					<?php 
-					while($p2=mysqli_fetch_array($r2, MYSQLI_ASSOC))
-					{
-						echo "<option value='".$p2['city']."'>".$p2['city']."</option>";
-					}
-					?>
+					
 				</select>
 				<button class="site-btn fs-submit" type="submit">SEARCH</button>
 			</form>
@@ -178,7 +190,7 @@
 						{
 							?>
 							<div class='col-md-4' style="height:300px;">
-								<form action='single-list_sale.php?action=add&id=<?php echo $x['flat_id']; ?>' method="post">
+								<form action='ssingle-list_sell.php?action=add&id=<?php echo $x['flat_id']; ?>' method="post">
 								<div class='sale-notic'>FOR Sale</div>
 									<div class='propertie-info text-white' style="background-image:url('<?php echo $x['image'] ?>');height:270px">
 									<div class='info-warp'>

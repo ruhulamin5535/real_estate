@@ -75,7 +75,7 @@ footer{
 	
 	<!-- Header section -->
 	<header class="header-section">
-		<div class="header-top">
+		<!-- <div class="header-top">
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-6 header-top-left">
@@ -94,7 +94,7 @@ footer{
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
 		<div class="container">
 			<div class="row">
 				<div class="col-12">
@@ -104,7 +104,7 @@ footer{
 							<i class="fa fa-bars"></i>
 						</div>
 						<ul class="main-menu">
-						<?php 
+						<!-- <?php 
                             if($_SESSION['type']=='builder')
                             {
                                 echo "<li><a href='builderHome.php'>Home</a></li>";
@@ -113,30 +113,10 @@ footer{
                             {
                                 echo "<li><a href='normalHomeSale.php'>Home</a></li>";
                             }
-                            ?>
-							 <?php 
-                            if($_SESSION['type']=='builder')
-                            {
-                                echo "<li><a href='builderHome.php'>FOR SALE</a></li>";
-                            }
-                            else
-                            {
-                                echo "<li><a href='normalHomeSale.php'>FOR SALE</a></li>";
-                            }
-                            ?>
-							
-             				  <?php if($_SESSION['type']=='builder')
-                            {
-                                echo "<li><a href='builderHome.php'>FOR RENT</a></li>";
-                            }
-                            else
-                            {
-                                echo "<li><a href='normalHomeSale.php'>FOR RENT</a></li>";
-                            }
-                            ?>
-							<!-- <li><a href="PackersAndMovers.php">Packers And Movers</a></li> -->
+                            ?> -->
 							
 							
+							<li><a href="rent.php">HOME</a></li>
 						</ul>
 					</div>
 				</div>

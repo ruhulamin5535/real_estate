@@ -82,9 +82,9 @@ footer{
 							<a href=""><i class="fa fa-pinterest"></i></a>
 							<a href=""><i class="fa fa-linkedin"></i></a>
 						</div>
-						<!-- <div class="user-panel">
+					 <div class="user-panel">
 							<a href="logout.php"><?php session_start(); echo $_SESSION['username']."  ";?><i class="fa fa-sign-in"></i> Logout</a>
-						</div> -->
+						</div>
 					</div>
 				</div>
 			</div>
@@ -98,11 +98,8 @@ footer{
 							<i class="fa fa-bars"></i>
 						</div>
 						<<ul class="main-menu">
-							<li><a href="index.php">Home</a></li>
-							 <li><a href="#">blog</a></li>
-                                <li><a href="#">payment</a></li>
-                                <li><a href="#">property management</a>
-							 <li><a href="normalHomeSale.php">new project</a></li>
+							<li><a href="normalHomeSale.php">Home</a></li>
+							
 							<li><a href="contact.html">Contact</a></li>
 						</ul>
 					</div>
@@ -285,7 +282,7 @@ $_SESSION["flat_id"]=$x;
 						</div>
 					</div>
 					<div class="contact-form-card">
-						<h5>Do you have any question?</h5>
+						<h5>Do you have any feedback</h5>
 
 						<form id="form" method="post">
 							<input type="text" name="name" placeholder="Your name">

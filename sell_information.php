@@ -27,25 +27,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 
-	<script>
-    function getState(val) {
-        $.ajax({
-        type: "POST",
-        url: "get_state.php",
-        data:'countryid='+val,
-        success: function(data){
-            $("#state-list").html(data);
-            $(".nice-select").hide();
-            $("#state-list").show();
-            $("#country-list").show();
-            $("#bedrooms").show();
-            $("#bathrooms").show();
-            $("#area").show();
-            $("#totalcost").show();
-        }
-        });
-    }
-    </script>
+	
 
 </head>
 <body>
@@ -64,11 +46,11 @@
 					<div class="col-lg-6 text-lg-right header-top-right">
 						<div class="top-social">
 							
-							<a href="https://www.facebook.com/"><i class="fa fa-facebook"></i></a>
+							<!-- <a href="https://www.facebook.com/"><i class="fa fa-facebook"></i></a>
 							<a href="https://www.twitter.com/"><i class="fa fa-twitter"></i></a>
 							<a href="https://www.instagram.com/"><i class="fa fa-instagram"></i></a>
 							<a href="https://www.pinterest.com/"><i class="fa fa-pinterest"></i></a>
-							<a href="https://www.linkedin.com/"><i class="fa fa-linkedin"></i></a>
+							<a href="https://www.linkedin.com/"><i class="fa fa-linkedin"></i></a> -->
 						
 							
 						</div>
@@ -88,10 +70,11 @@
 							<i class="fa fa-bars"></i>
 						</div>
 						<ul class="main-menu">
-                            <li><a href="normalHomeSale.php">FOR SALE</a></li>
-                            <li><a href="normalHomeRent.php">FOR RENT</a></li>
+              <li><a href="normalHomeSale.php">FOR SALE</a></li>
+              <li><a href="normalHomeRent.php">FOR RENT</a></li>
+			 
 							
-						
+							<!-- <li><a href="PackersAndMovers.php">PACKERS N MOVERS</a></li> -->
 							
 						</ul>
 					</div>
@@ -106,67 +89,78 @@
 	<section class="hero-section set-bg" data-setbg="img/bg.jpg">
 		<div class="container hero-text text-white">
 			<h2>List your building on our website</h2>
-			<a href="addprojectrent.php" class="site-btn">Add Now</a>
-			<a href="show_rent.php" class="site-btn">Show</a>
-			<a href="rent_property.php" class="site-btn">rent property</a>
-			<a href="rent_information.php" class="site-btn">rent property statistics</a>
+			<a href="addprojectsale.php" class="site-btn">Add Now</a>
+			<a href="show_sell.php" class="site-btn">show</a>
+			<a href="sell_property.php" class="site-btn">sell property</a>
+			<a href="sell_information.php" class="site-btn">sell property statistics</a>
 			
 		</div>
 	</section>
+	<br><br>
+	<br><br>
+	<br><br>
 
-	<!-- Hero section end -->
+	<section>
+	<div class="filter-search">
+		<!-- <div class="container">
+			<p>total sell property</p>
+		</div> -->
+	</div>
+	</section>
 	<?php 
     include('indexDB.php');
-    $loc=$c=$pf=$pf1=$a=$a1=$tc=$tc1='';
-    
-    $q="SELECT * FROM rent_search ORDER BY flat_id DESC;";
+    $q="SELECT * FROM sell where status ='0' ORDER BY flat_id DESC";
 
-    if(isset($_POST['loc']) && isset($_POST['city']) )
+						$r = $conn->query($q);
+             
+    $t=$t1='';
+    if(isset($_POST['time'])  && isset($_POST['time1']))
     {
+    	$t=$_POST['time'];
+        $t1=$_POST['time1'];
 
-       $loc=$_POST['loc'];
-        $c=$_POST['city'];
-       
-            $q="SELECT * FROM rent_search WHERE countryid ='".$loc."' AND  stateid ='".$c."'  ORDER BY flat_id DESC";
-       
+      $q="SELECT * FROM  sell WHERE  time BETWEEN  '".$t."' AND  '".$t1."' AND status='0'  ORDER BY flat_id DESC";
+      // var_dump($q);
 
-         
-    }
-  
-   
-   
     
+    }
+
+    // $conditions = "";
+
+    //  if (isset($_POST['time']) && $_POST['time'] && $_POST['time1']) {
+    // 	$conditions.= " time BETWEEN ".$_POST['time']." AND ".$_POST['time1']." AND ";
+    // 	var_dump($conditions);
+    // }
+
+    
+    // $conditions.= "1";
+    
+
+     
+   
+   
     ?>
 
+	
 
 	<!-- Filter form section -->
+	<section>
 	<div class="filter-search">
 		<div class="container">
-			<form class="filter-form" method="post" action="normalHomeRent.php">
-			<h2>Search by Location</h2>
-			<h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Location   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;City</h4>
+			<form class="filter-form" method="post" action="sell_information.php">
+			<h2>Search by sell property</h2>
+			<h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;date  </h4>
 			
 			
-				<select name="loc" name="loc" id="country-list" onChange="getState(this.value);">
-										<option value="All" selected>All</option>
-					 <?php
-                                                $sql1="SELECT * FROM country";
-                                                 $results=$conn->query($sql1); 
-                                                while($rs=$results->fetch_assoc()) { 
-                                                ?>
-                                                <option value="<?php echo $rs["countryid"]; ?>"><?php echo $rs["location"]; ?></option>
-                                                <?php
-                                                }
-                                                ?> 
-				</select>
-				<select name="city"  id="state-list">
-					<option value="All" selected>All</option>
+				date:<input type="date" value="0" name="time">
+				date:<input type="date" value="0" name="time1">
 					
-				</select>
+				
 				<button class="site-btn fs-submit" type="submit">SEARCH</button>
 			</form>
 		</div>
 	</div>
+	</section>
 	<!-- page -->
 	<section class="page-section categories-page">
 		<br><br>
@@ -175,20 +169,39 @@
 		<div class="container">
 			<div class="row">
 
+
 				<?php
+				       // $q="SELECT * FROM sell where status ='0' ORDER BY flat_id DESC";
+
 						$r = $conn->query($q);
+						
+						$result = mysqli_num_rows ($r);
+					?>
+					<h4>number of sell  property: <?php echo $result;  ?> <br></h4>
+
+					
+					
+					
+						<?php
 						while($x=mysqli_fetch_array($r, MYSQLI_ASSOC))
 						{
 							?>
 							<div class='col-md-4' style="height:300px;">
-								<form action='single-list_rent.php?action=add&id=<?php echo $x['flat_id']; ?>' method="post">
-								<div class='sale-notic'>FOR Rent</div>
+								<form action='single-list_sale.php?action=add&id=<?php echo $x['flat_id']; ?>' method="post">
+								<div class='sale-notic'>FOR Sale</div>
 									<div class='propertie-info text-white' style="background-image:url('<?php echo $x['image'] ?>');height:270px">
 									<div class='info-warp'>
 										<p><i class='fa fa-map-marker'></i><?php echo $x['location'] ?></p>
 									</div>
-									<button class='price' type='submit'><?php echo "Tk. ".$x['rent_amount'] ?></button>
+									<div class='info-warp'>
+										<p><i class='fa fa-bed'></i><?php echo $x['p_feature'] ?></p>
 									</div>
+									<div class='info-warp'>
+										<p><i class='fa fa-bath'></i><?php echo $x['p_feature1'] ?></p>
+									</div>
+									<button class='price' type='submit'><?php echo  "TK ".$x['totalcost'] ?></button>
+									</div>
+
 									</form>
 							</div>
 				<?php
@@ -199,8 +212,7 @@
 		
 			
 	</section>
-	
-	
+
 	<footer class="footer-section set-bg" data-setbg="img/footer-bg.jpg">
 		<div class="container">
 			<div class="row">
@@ -258,6 +270,7 @@
 			
 		</div>
 	</footer>
+
 	<!-- Footer section end -->                               
 	<!--====== Javascripts & Jquery ======-->
 	<script src="js/jquery-3.2.1.min.js"></script>

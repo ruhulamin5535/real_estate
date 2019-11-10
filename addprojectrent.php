@@ -128,9 +128,9 @@ if($b==true && isset($_POST['submit']))
 {
     $id='uid';
     $q1="insert into flat(location,$id,city,description,amenities,area,image,image1,image2,image3,amenities1,amenities2,p_feature,p_feature1,p_feature2) values('$loc',".$_SESSION['id'].",'$city','$desc','$am',$ar,'$i','$i1','$i2','$i3','$am1','$am2','$pf','$pf1','$pf2')";
-    echo $q1;
+    
     $x=$conn->query($q1);
-    $q4="select flat_id from flat where location='$loc' and city='$city' and area=$ar and amenities='$am'";
+    $q4="select flat_id from flat where area='$ar'";
     $r4=$conn->query($q4);
     $y=mysqli_fetch_array($r4, MYSQLI_ASSOC);
     $test1=$y['flat_id'];
@@ -217,7 +217,7 @@ if($b==true && isset($_POST['submit']))
 							<?php 
 							if($_SESSION['type']=='normal')
 							{
-								echo "<li><a href='normalHomeSale.php'>View property</a></li>";
+								echo "<li><a href='normalHomerent.php'>View property</a></li>";
 							}
 							else
 							{
@@ -227,7 +227,7 @@ if($b==true && isset($_POST['submit']))
 				
 							 <li><a href="normalHomeSale.php">FOR SALE</a></li>
                             <li><a href="normalHomeRent.php">FOR RENT</a></li>
-							<li><a href="upcomingprojects.php">UPCOMING PROJECTS</a></li>			
+							<!-- <li><a href="upcomingprojects.php">UPCOMING PROJECTS</a></li>		 -->	
 							<!-- <li><a href="PackersAndMovers.php">Packers And Movers</a></li> -->
 						</ul>
 					</div>

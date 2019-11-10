@@ -68,29 +68,17 @@ footer{
 </style>
 </head>
 <body>
-	<!-- Page Preloder -->
-	<div id="preloder">
-		<div class="loader"></div>
-	</div>
-	
-	<!-- Header section -->
-	<header class="header-section">
+<header class="header-section">
 		<div class="header-top">
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-6 header-top-left">
 					</div>
 					<div class="col-lg-6 text-lg-right header-top-right">
-						<div class="top-social">
-							<a href=""><i class="fa fa-facebook"></i></a>
-							<a href=""><i class="fa fa-twitter"></i></a>
-							<a href=""><i class="fa fa-instagram"></i></a>
-							<a href=""><i class="fa fa-pinterest"></i></a>
-							<a href=""><i class="fa fa-linkedin"></i></a>
-						</div>
-						<div class="user-panel">
+						
+						 <div class="user-panel">
 							<a href="logout.php"><?php session_start(); echo $_SESSION['username']."  ";?><i class="fa fa-sign-in"></i> Logout</a>
-						</div>
+						</div> 
 					</div>
 				</div>
 			</div>
@@ -103,40 +91,10 @@ footer{
 						<div class="nav-switch">
 							<i class="fa fa-bars"></i>
 						</div>
-						<ul class="main-menu">
-						<?php 
-                            if($_SESSION['type']=='builder')
-                            {
-                                echo "<li><a href='builderHome.php'>Home</a></li>";
-                            }
-                            else
-                            {
-                                echo "<li><a href='normalHomeSale.php'>Home</a></li>";
-                            }
-                            ?>
-							 <?php 
-                            if($_SESSION['type']=='builder')
-                            {
-                                echo "<li><a href='builderHome.php'>FOR SALE</a></li>";
-                            }
-                            else
-                            {
-                                echo "<li><a href='normalHomeSale.php'>FOR SALE</a></li>";
-                            }
-                            ?>
-							
-             				  <?php if($_SESSION['type']=='builder')
-                            {
-                                echo "<li><a href='builderHome.php'>FOR RENT</a></li>";
-                            }
-                            else
-                            {
-                                echo "<li><a href='normalHomeSale.php'>FOR RENT</a></li>";
-                            }
-                            ?>
-							<!-- <li><a href="PackersAndMovers.php">Packers And Movers</a></li> -->
-							
-							
+						<<ul class="main-menu">
+							<li><a href="index.php">Home</a></li>
+							 
+							<li><a href="contact.html">Contact</a></li>
 						</ul>
 					</div>
 				</div>
@@ -164,7 +122,7 @@ footer{
   <?php
 include('indexDB.php');
 $x=$_GET["id"];
-$sql = "SELECT * FROM flat natural join rent where flat_id=$x";
+$sql = "SELECT * FROM flat natural join sale where flat_id=$x";
 $result = $conn->query($sql);
 $row = mysqli_fetch_assoc($result);
 $q='';$a;
@@ -178,12 +136,10 @@ else
   $a=2;
   $q="select nameorg from login_builder where bid=".$row['bid']."";
 }
-$res=$conn->query($q);
-$r= mysqli_fetch_assoc($res);
-$a="SELECT rent_amount FROM rent where flat_id=$x";
+$a="SELECT totalcost FROM SALE where flat_id=$x";
 $r1 = $conn->query($a);
 $r2 = mysqli_fetch_assoc($r1);
-$_SESSION["amt"]=$r2['rent_amount'];
+$_SESSION["amt"]=$r2['totalcost'];
 $b="SELECT name from login where UID=(SELECT uid from flat where flat_id=$x)";
 $r4=$conn->query($b);
 $r5= mysqli_fetch_assoc($r4);
@@ -211,31 +167,25 @@ $_SESSION["flat_id"]=$x;
 						<div class="row">
 							<div class="col-xl-8 sl-title">
 								<h2><?php echo $row['location'] ?></h2>
-								<p><i class="fa fa-map-marker"></i><?php echo $row['location'] ?></p>
+								<p><i class="fa fa-map-marker"></i><?php echo $row['city'] ?></p>
 							</div>
 							<div class="col-xl-4">
-								<a href="payment.php" class="price-btn"><?php echo  "Rent Amount: ".$row['rent_amount']."/-" ?></a>
-							</div>
-							<div class="col-xl-4">
-								<button class="price-btn"><?php echo  "Deposit Amount: ".$row['deposit_amount']."/-" ?></button>
-                            </div>
-                            <div class="col-xl-4">
-								<button class="price-btn"><?php echo "Time Period: ".$row['time_period']." months" ?></button>
+								<a href="payment.php" class="price-btn"><?php echo "Rs. ".$row['totalcost']."/-" ?></a>
 							</div>
 						</div>
 						<h3 class="sl-sp-title">Property Details</h3>
 						<div class="row property-details-list">
 							<div class="col-md-4 col-sm-6">
-								<p><i class="fa fa-th-large"></i><?php echo $row['area']." sqft" ?></p>
+								<p><i class="fa fa-th-large"></i><?php echo "Area:&nbsp;&nbsp;&nbsp;".$row['area']." sqft" ?></p>
 								<p><i class="fa fa-bath"></i><?php echo $row['p_feature1'] ?> Bathrooms</p>
-								
-								
-							</div>
-                              <div class="col-md-4 col-sm-6">
-								
-								<p><i class="fa fa-bed"></i><?php echo $row['p_feature'] ?> Bedrooms</p>
 								<p><i class="fa fa-car"></i><?php echo $row['p_feature2'] ?> Garages  </p>
 								</div>
+							<div class="col-md-4 col-sm-6">
+								<p><i class="fa fa-th-large"></i><?php echo "Rate:&nbsp;&nbsp;&nbsp;".$row['rate']." per sqft"?></p>
+								<p><i class="fa fa-bed"></i><?php echo $row['p_feature'] ?> Bedrooms</p>
+								</div>
+
+
 
 						</div>
 						<h3 class="sl-sp-title">Description</h3>
@@ -267,8 +217,9 @@ $_SESSION["flat_id"]=$x;
           </div>
         </div>
           <?php
+        include('indexDB.php');
         	$x=$_GET["id"];
-        	$sql1="SELECT * FROM flat natural join rent where flat_id=$x";
+        	$sql1="SELECT * FROM flat natural join sale where flat_id=$x";
         	$result1 = $conn->query($sql1);
 			$row1 = mysqli_fetch_assoc($result1);
 			$b=0;$q1='';
@@ -297,15 +248,14 @@ $_SESSION["flat_id"]=$x;
 			if($b==1)
 			{
 				$q1="select * from login where UID=".$row1['uid']."";
-				$_SESSION["save1"] =$row1['uid'] ;
+				$_SESSION["save"] =$row1['uid'] ;
 
 			}
 			else if($b==2)
 			{
-				 $q1="select * from login_builder where BID=".$row1['bid']."";
-				 $_SESSION["save1"] =$row1['bid'] ;
+				 $q1="select * from login_builder where BID=".$row['bid']."";
+				 $_SESSION["save"] =$row1['bid'] ;
 			}
-		//	echo $q1;
 			$res1=$conn->query($q1);
 			$r1= mysqli_fetch_assoc($res1);
         	
@@ -379,6 +329,7 @@ $_SESSION["flat_id"]=$x;
         $result1 = $conn->query($q1);
     }
 ?>
+
       </div>
 		</div>
 	</section>
@@ -411,18 +362,19 @@ $_SESSION["flat_id"]=$x;
 
 
 	<!-- Footer section -->
-	<!-- <footer class="footer-section set-bg" data-setbg="img/footer-bg.jpg">
+<!-- <footer class="footer-section set-bg" data-setbg="img/footer-bg.jpg">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-3 col-md-6 footer-widget">
 					<img src="img/logo1.png" alt="">
-					<p>Lorem ipsum dolo sit azmet, consecter dipise consult  elit. Maecenas mamus antesme non anean a dolor sample tempor nuncest erat.</p>
+					<p>We provide you with the best services which is best for your family and which suits your pocket.</p>
 					<div class="social">
-						<a href="#"><i class="fa fa-facebook"></i></a>
-						<a href="#"><i class="fa fa-twitter"></i></a>
-						<a href="#"><i class="fa fa-instagram"></i></a>
-						<a href="#"><i class="fa fa-pinterest"></i></a>
-						<a href="#"><i class="fa fa-linkedin"></i></a>
+						
+						<a href="https://www.facebook.com/"><i class="fa fa-facebook"></i></a>
+							<a href="https://www.twitter.com/"><i class="fa fa-twitter"></i></a>
+							<a href="https://www.instagram.com/"><i class="fa fa-instagram"></i></a>
+							<a href="https://www.pinterest.com/"><i class="fa fa-pinterest"></i></a>
+							
 					</div>
 				</div>
 				<div class="col-lg-3 col-md-6 footer-widget">
@@ -430,7 +382,7 @@ $_SESSION["flat_id"]=$x;
 						<h5 class="fw-title">CONTACT US</h5>
 						<p><i class="fa fa-map-marker"></i>You can contact us here......  </p>
 						<p><i class="fa fa-phone"></i>Number</p>
-						<p><i class="fa fa-envelope"></i>info.leramiz@colorlib.com</p>
+						<p><i class="fa fa-envelope"></i>info.housing-co@gmail.com</p>
 						<p><i class="fa fa-clock-o"></i>Mon - Sat, 08 AM - 06 PM</p>
 					</div>
 				</div>
@@ -438,18 +390,18 @@ $_SESSION["flat_id"]=$x;
 					<div class="double-menu-widget">
 						<h5 class="fw-title">POPULAR PLACES</h5>
 						<ul>
-							<li><a href="">Florida</a></li>
-							<li><a href="">New York</a></li>
-							<li><a href="">Washington</a></li>
-							<li><a href="">Los Angeles</a></li>
-							<li><a href="">Chicago</a></li>
+							<li><a href="">Mumbai</a></li>
+							<li><a href="">Delhi</a></li>
+							<li><a href="">Chennai</a></li>
+							<li><a href="">Kolkata</a></li>
+							<li><a href="">Banglore</a></li>
 						</ul>
 						<ul>
-							<li><a href="">St Louis</a></li>
-							<li><a href="">Jacksonville</a></li>
-							<li><a href="">San Jose</a></li>
-							<li><a href="">San Diego</a></li>
-							<li><a href="">Houston</a></li>
+							<li><a href="">Chandigarh</a></li>
+							<li><a href="">Pune</a></li>
+							<li><a href="">Jaipur</a></li>
+							<li><a href="">Kochi</a></li>
+							<li><a href="">Ooty</a></li>
 						</ul>
 					</div>
 				</div>
@@ -464,26 +416,9 @@ $_SESSION["flat_id"]=$x;
 					</div>
 				</div>
 			</div>
-			<div class="footer-bottom">
-				<div class="footer-nav">
-					<ul>
-						<li><a href="">Home</a></li>
-						<li><a href="">Featured Listing</a></li>
-						<li><a href="">About us</a></li>
-						<li><a href="">Pages</a></li>
-						<li><a href="">Blog</a></li>
-						<li><a href="">Contact</a></li>
-					</ul>
-				</div>
-				<div class="copyright">
-					<p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
-				</div>
-			</div>
+			
 		</div>
-	</footer> -->
-	<!-- Footer section end -->
+	</footer> -->	<!-- Footer section end -->
 
                                         
 	<!--====== Javascripts & Jquery ======-->

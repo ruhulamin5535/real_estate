@@ -120,7 +120,7 @@ if($b==true && isset($_POST['submit']))
 		$result1 = $conn->query($q1);
 		echo $q1;
     echo "Insert in flat done";
-    $q3="select flat_id from flat where city='$city'  ";
+    $q3="select flat_id from flat where area='$ar'";
     $r3=$conn->query($q3);
     $x=mysqli_fetch_array($r3, MYSQLI_ASSOC);
     $test=$x['flat_id'];
@@ -227,7 +227,7 @@ if($b==true && isset($_POST['submit']))
 				
 							 <li><a href="normalHomeSale.php">FOR SALE</a></li>
                             <li><a href="normalHomeRent.php">FOR RENT</a></li>
-							<li><a href="upcomingprojects.php">UPCOMING PROJECTS</a></li>			
+									
 							<!-- <li><a href="PackersAndMovers.php">Packers And Movers</a></li> -->
 						</ul>
 					</div>
@@ -259,6 +259,7 @@ input[type=text],input[type=date],input[type=password] {
     background-color: #e0e0d1;
     color:black;
 }
+
 
  input[type=submit], input[type=reset] {
     background-color: #e0e0d1;

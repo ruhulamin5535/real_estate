@@ -52,6 +52,7 @@ $courses=$stmt->fetchAll(PDO::FETCH_ASSOC);
                     <th> garages </th>
                     <th> Rate amount </th>
                     <th> Actions      </th>
+                    <th> status change  </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -77,16 +78,29 @@ $courses=$stmt->fetchAll(PDO::FETCH_ASSOC);
                         <td><?php echo $course['rent_amount']?></td>
                       
 
-
-
-
-
                         <td>
                             <nav>
+                                 <?php
+                         if ($course['status']==1) {
+                              echo "<p style='color: green'> active</p>";
+                          } 
+                          else{
+                             echo "<p style='color: red'>inactive</p>";
+                          }
+                          ?>
                                
                                 <!-- <li><a href="edit.php?flat_id=<?= $course['flat_id'] ?>">Edit</a> </li> -->
                                 <li><a href="delete_rent.php?flat_id=<?= $course['flat_id'] ?>">Delete</a></li>
                             </nav>
+                        </td>
+
+                        <td>
+                            <select onchange="disable(this.value,<?php echo $course['flat_id'];  ?>)">
+                             <option value="">select</option>
+                             <option value="1">active</option>
+                             <option value="0">inactive</option>
+                         </select>
+                            
                         </td>
                     </tr>
 
@@ -104,7 +118,19 @@ $courses=$stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-
+<script type="text/javascript">
+    function disable(val,user_id) {
+       alert("you should chage status");
+       $.ajax({
+        type: 'post',
+        url: 'rchange.php',
+        data:{val:val,user_id:user_id},
+        success: function(result){
+            console.log(result);
+        }
+       });
+    }
+</script>
 
 </body>
 </html>

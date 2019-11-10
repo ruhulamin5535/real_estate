@@ -12,8 +12,8 @@
 <meta name="description" content="Bluesky template project">
 <meta name="viewport" content="width=device-width, initial-scale=1"> -->
 <link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
-<link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+
+
 <link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
 <link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/animate.css">
 <link rel="stylesheet" type="text/css" href="styles/main_styles.css">
@@ -29,6 +29,26 @@
     <link rel="stylesheet" href="style.css">
 
 </head>
+<script>
+    function getState(val) {
+        $.ajax({
+        type: "POST",
+        url: "get_state.php",
+        data:'countryid='+val,
+        success: function(data){
+            $("#state-list").html(data);
+            $(".nice-select").hide();
+            $("#state-list").show();
+            $("#country-list").show();
+            $("#bedrooms").show();
+            $("#bathrooms").show();
+            $("#area").show();
+            $("#totalcost").show();
+        }
+        });
+    }
+    </script>
+
 
 <body>
     <!-- Preloader -->
@@ -66,11 +86,11 @@
                         <div class="classynav">
                             <ul>
                                 <li><a href="#">blog</a></li>
-                                <li><a href="#">payment</a></li>
+                                
                                 <li><a href="#">property management</a>
                                     <ul class="dropdown">
                                         <li><a href="realestate.php">realestate </a></li>
-                                        <li><a href="#">property </a></li>
+                                        
                                         
                                     </ul>
                                 </li>
@@ -132,42 +152,7 @@
     <!-- ##### Hero Area End ##### -->
    <?php 
     include('indexDB.php');
-    $loc=$c=$pf=$pf1=$a=$tc='';
-    $x1="select  location from flat";
-    $x2="select  totalcost from sale";
-    $x3="select  city from flat";
-    $x4="select  p_feature from flat";
-    $x5="select  p_feature1 from flat";
-    $x6="select  area from flat";
-    $q="select * from view_pro order by flat_id desc";
-    if(isset($_POST['loc']) || isset($_POST['city'])|| isset($_POST['p_feature']) ||isset($_POST['p_feature1']) || isset($_POST['area']) || isset($_POST['totalcost']) )
-    {
-        $loc=$_POST['loc'];
-        $c=$_POST['city'];
-        $pf=$_POST['p_feature'];
-        $pf1=$_POST['p_feature1'];
-        $a=$_POST['area'];
-        $tc=$_POST['totalcost'];
-        if($loc=='All' || $c=='All'|| $pf=='All' || $pf1=='All' || $a=='All' || $tc=='All' )
-        {
-            $q="select * from view_pro order by flat_id desc";
-        }
-        if($loc=='All' || $c!='All' || $pf!=='All' || $pf1!=='All'|| $a!=='All' || $tc!=='All' )
-        {
-            $q="select * from view_pro where city='$c' order by flat_id desc";
-        }
-        if($loc!='All')
-        {
-            $x2="select city from view_pro where location='$loc'";
-            $q="select * from view_pro where location='$loc' order by flat_id desc";
-        }
-    }
-    $r1=$conn->query($x1);
-    $r2=$conn->query($x2);
-    $r3=$conn->query($x3);
-    $r4=$conn->query($x4);
-    $r5=$conn->query($x5);
-    $r6=$conn->query($x6);
+   
     
     ?>
 
@@ -188,46 +173,27 @@
 
                                 <div class="col-12 col-md-4 col-lg-3">
                                     <div class="form-group">
-                                        <select class="form-control"  name="loc" id="catagories">
-                                            <option>Location</option>
-                                           <?php 
-                    while($p1=mysqli_fetch_array($r1, MYSQLI_ASSOC))
-                    {
-                        echo "<option value='".$p1['location']."'>".$p1['location']."</option>";
-                    }
-                    ?>
+                                        <select class="form-control"  name="loc" id="country-list" onChange="getState(this.value);">
+                                            <option value="0">Location</option>
+                                              <?php
+                                                $sql1="SELECT * FROM country";
+                                                 $results=$conn->query($sql1); 
+                                                while($rs=$results->fetch_assoc()) { 
+                                                ?>
+                                                <option value="<?php echo $rs["countryid"]; ?>"><?php echo $rs["location"]; ?></option>
+                                                <?php
+                                                }
+                                                ?> 
                                         </select>
                                     </div>
                                 </div>
 
-                                <!-- <div class="col-12 col-md-4 col-lg-3">
-                                    <div class="form-group">
-                                        <select class="form-control" id="cities">
-                                            <option>price</option>
-                                            <option>any</option>
-                                            <option>250000</option>
-                                            <option>300000</option>
-                                            <option>400000</option>
-                                            <option>450000</option>
-                                            <option>500000</option>
-                                            <option>550000</option>
-                                            <option>600000</option>
-                                            <option>620000</option>
-                                            <option>700000</option>
-                                        </select>
-                                    </div>
-                                </div> -->
-
+                               
                                 <div class="col-12 col-md-4 col-lg-3">
                                     <div class="form-group">
-                                       <select class="form-control"  name="city" id="catagories">
-                                            <option>city</option>
-                                          <?php 
-                    while($p2=mysqli_fetch_array($r3, MYSQLI_ASSOC))
-                    {
-                        echo "<option value='".$p2['city']."'>".$p2['city']."</option>";
-                    }
-                    ?>
+                                       <select class="form-control"  name="city" id="state-list">
+                                            <option value="0">city</option>
+                                         
                                         </select>
                                     </div>
                                 </div>
@@ -236,13 +202,10 @@
                                 <div class="col-12 col-md-4 col-xl-2">
                                     <div class="form-group">
                                         <select class="form-control" name="p_feature" id="bedrooms">
-                                            <option>Bedrooms</option>
-                                            <?php 
-                    while($p3=mysqli_fetch_array($r4, MYSQLI_ASSOC))
-                    {
-                        echo "<option value='".$p3['p_feature']."'>".$p3['p_feature']."</option>";
-                    }
-                    ?>
+                                             <option value="0">Bedrooms</option>
+                                              <option>4</option>
+                                               <option>6</option>
+                                                <option>8</option>
                                         </select>
                                     </div>
                                 </div>
@@ -250,148 +213,51 @@
                                 <div class="col-12 col-md-4 col-xl-2">
                                     <div class="form-group">
                                         <select class="form-control" name="p_feature1" id="bathrooms">
-                                            <option>Bathrooms</option>
-                                            <?php 
-                    while($p4=mysqli_fetch_array($r5, MYSQLI_ASSOC))
-                    {
-                        echo "<option value='".$p4['p_feature1']."'>".$p4['p_feature1']."</option>";
-                    }
-                    ?>
+                                            <option value="0">Bathrooms</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-12 col-md-4 col-xl-2">
-                                    <div class="form-group">
-                                        <select class="form-control" name="area" id="bathrooms">
-                                            <option>area</option>
-                                            <?php 
-                    while($p5=mysqli_fetch_array($r6, MYSQLI_ASSOC))
-                    {
-                        echo "<option value='".$p5['area']."'>".$p5['area']."</option>";
-                    }
-                    ?>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-4 col-xl-2">
-                                    <div class="form-group">
-                                        <select class="form-control" name="totalcost" id="bathrooms">
-                                            <option>total cost</option>
-                                            <?php 
-                    while($p6=mysqli_fetch_array($r2, MYSQLI_ASSOC))
-                    {
-                        echo "<option value='".$p6['totalcost']."'>".$p6['totalcost']."</option>";
-                    }
-                    ?>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <!-- <div class="col-12 col-md-8 col-lg-12 col-xl-5 d-flex"> -->
+                              
+ 
+                              
                                     <!-- Space Range -->
-                                    <!-- <div class="slider-range">
-                                        <div data-min="600" data-max="4200" data-unit=" sq. ft" class="slider-range-price ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" data-value-min="600" data-value-max="4200">
+                                    <div class="slider-range">
+                                        <label>price </label>
+                                        <div data-min="1000" data-max="100000000" data-unit=" T.K" class="slider-range-price ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" data-value-min="1000" data-value-max="100000000">
                                             <div class="ui-slider-range ui-widget-header ui-corner-all"></div>
                                             <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"></span>
                                             <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"></span>
                                         </div>
-                                        <div class="range">600 sq. ft - 4200 sq. ft</div>
-                                    </div> -->
-
+                                        <div class="range">1000tk - 100000000tk</div>
+                                        <input type="hidden" class="range-min-value" name="price_min_value">
+                                        <input type="hidden" class="range-max-value" name="price_max_value">
+                                        
+                                    </div>
+                                     
+                                    
                                     <!-- Distance price -->
-                                   <!--  <div class="slider-range">
-                                        <div data-min="10000" data-max="10000000" data-unit=" tk" class="slider-range-price ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" data-value-min="10000" data-value-max="10000000">
+                                    <div class="slider-range">
+                                       <br><br> <label>area </label><br><br>
+                                        <div data-min="600" data-max="4200" data-unit=" sq.ft" class="slider-range-price ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" data-value-min="600" data-value-max="4200">
                                             <div class="ui-slider-range ui-widget-header ui-corner-all"></div>
                                             <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"></span>
                                             <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"></span>
                                         </div>
-                                        <div class="range">10000 tk - 10000000 tk</div>
+                                        <div class="range">600sq.ft. - 4200sq.ft.</div>
+                                        <input type="hidden" class="range-min-value" name="area_min_value">
+                                        <input type="hidden" class="range-max-value" name="area_max_value">
+                                        
                                     </div>
-                                </div> -->
+                                   
+                                     
+                                      
 
-                               <!--  <div class="col-12 search-form-second-steps">
-                                    <div class="row">
+                             
 
-                                        <div class="col-12 col-md-4 col-lg-3">
-                                            <div class="form-group">
-                                                <select class="form-control" id="types">
-                                                    <option>All Types</option>
-                                                    <option>Apartment <span>(30)</span></option>
-                                                    <option>Land <span>(69)</span></option>
-                                                    <option>Villas <span>(103)</span></option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12 col-md-4 col-lg-3">
-                                            <div class="form-group">
-                                                <select class="form-control" id="catagories2">
-                                                    <option>All Catagories</option>
-                                                    <option>Apartment</option>
-                                                    <option>Bar</option>
-                                                    <option>Farm</option>
-                                                    <option>House</option>
-                                                    <option>Store</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12 col-md-4 col-lg-3">
-                                            <div class="form-group">
-                                                <select class="form-control" id="Actions">
-                                                    <option>All Actions</option>
-                                                    <option>Sales</option>
-                                                    <option>Booking</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12 col-md-4 col-lg-3">
-                                            <div class="form-group">
-                                                <select class="form-control" id="city2">
-                                                    <option>All City</option>
-                                                    <option>City 1</option>
-                                                    <option>City 2</option>
-                                                    <option>City 3</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12 col-md-4">
-                                            <div class="form-group">
-                                                <select class="form-control" id="Actions3">
-                                                    <option>All Actions</option>
-                                                    <option>Sales</option>
-                                                    <option>Booking</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12 col-md-4">
-                                            <div class="form-group">
-                                                <select class="form-control" id="city3">
-                                                    <option>All City</option>
-                                                    <option>City 1</option>
-                                                    <option>City 2</option>
-                                                    <option>City 3</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12 col-md-4">
-                                            <div class="form-group">
-                                                <select class="form-control" id="city5">
-                                                    <option>All City</option>
-                                                    <option>City 1</option>
-                                                    <option>City 2</option>
-                                                    <option>City 3</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-12 d-flex justify-content-between align-items-end"> -->
+                                <div class="col-12 d-flex justify-content-between align-items-end">
                                     <!-- More Filter -->
                                     <!-- <div class="more-filter">
                                         <a href="#" id="moreFilter">+ More filters</a>
@@ -438,15 +304,11 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     </footer>
 </div>
 
-<script src="js/jquery-3.2.1.min.js"></script>
-<script src="styles/bootstrap4/popper.js"></script>
-<script src="styles/bootstrap4/bootstrap.min.js"></script>
-<script src="plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
-<script src="plugins/easing/easing.js"></script>
-<script src="plugins/parallax-js-master/parallax.min.js"></script>
-<script src="js/custom.js"></script>
 
-    <!-- ##### Footer Area End ##### -->
+
+<script src="plugins/parallax-js-master/parallax.min.js"></script>
+
+  
 
     <!-- jQuery (Necessary for All JavaScript Plugins) -->
     <script src="js/jquery/jquery-2.2.4.min.js"></script>
